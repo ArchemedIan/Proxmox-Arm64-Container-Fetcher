@@ -130,9 +130,7 @@ then
 	unxz -T0 ./rootfs.tar.xz
 	fixTarball
 	echo "recompressing tarball..."
-	xz -T0 ./rootfs.tar
-else
-	
+	xz -T0 ./rootfs.tar	
 fi
 
 [[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE)"
