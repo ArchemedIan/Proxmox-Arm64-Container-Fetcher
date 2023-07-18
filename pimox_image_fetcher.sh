@@ -71,6 +71,7 @@ LUrL="$UrL"
 clear
 for UrlPart in distro release arm64 variant build_date
 do
+	[[ "$UrlPart" = "arm64" ]] && LUrL=$LUrL/arm64
 	[[ "$UrlPart" = "arm64" ]] && continue
 	if [ "$UrlPart" = "build_date" ]
 	then
