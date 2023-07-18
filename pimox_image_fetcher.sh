@@ -62,28 +62,54 @@ function pause(){
 
 
 quiet=0
-[[ ! -z "$1" ]] && distro=$1
-[[ ! -z "$2" ]] && release=$2
-[[ ! -z "$3" ]] && variant=$3
-[[ ! -z "$4" ]] && PaTh_tO_ImAgE_CaChE=$4 || PaTh_tO_ImAgE_CaChE="."
-[[ ! -z "$5" ]] && quiet=$5
+[[ -z "$1" ]] && distro=-1 || distro=$1
+[[ -z "$2" ]] && release=-1 || release=$2
+[[ -z "$3" ]] && variant=-1 || variant=$3
+[[ -z "$4" ]] && PaTh_tO_ImAgE_CaChE="." || PaTh_tO_ImAgE_CaChE=$4
+[[ -z "$5" ]] || quiet=$5
+
+echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
+#exit 0
 LUrL="$UrL"
 clear
 for UrlPart in distro release arm64 variant build_date
 do
 	[[ "$UrlPart" = "arm64" ]] && LUrL=$LUrL/arm64
 	[[ "$UrlPart" = "arm64" ]] && continue
-	if [ "$UrlPart" = "build_date" ]
-	then
+	
+	if [ "$UrlPart" = "distro" ] ; then
+		[[ "$distro" = -1 ]] || LUrL=$LUrL/$distro
+		[[ "$distro" = -1 ]] || continue 
+		echo
+	fi
+	
+	if [ "$UrlPart" = "release" ] ; then
+		[[ "$release" = -1 ]] || LUrL=$LUrL/$release
+		[[ "$release" = -1 ]] || continue 
+		echo
+		echo "distro: $distro"
+	fi
+	
+	if [ "$UrlPart" = "variant" ] ; then
+		[[ "$variant" = -1 ]] || LUrL=$LUrL/$variant
+		[[ "$variant" = -1 ]] || continue 
+		echo
+		echo "  distro: $distro"
+		echo "  release: $release"
+	fi
+	
+	if [ "$UrlPart" = "build_date" ] ; then
 		build_date=$(curl --silent https://images.linuxcontainers.org/images/$distro/$release/arm64/$variant/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//' |cut -d '_' -f 1| sort -r |head -n 1)
 		build_date=$(curl --silent https://images.linuxcontainers.org/images/$distro/$release/arm64/$variant/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//' |grep -e "$build_date")
+		friendly_build_date=$(echo $build_date|cut -d"_" -f1)
+		#echo $friendly_build_date
+		
 		LUrL=$LUrL/$build_date
+		
 		continue
-	else
-		[[ ! -z "$1" ]] && continue
-		[[ ! -z "$2" ]] && continue
-		[[ ! -z "$3" ]] && continue
 	fi
+
+
 	LIST=($(curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'))
 	#echo ${LIST[@]}
 	#pause
@@ -104,14 +130,15 @@ do
 	done
 done
 UrL=$UrL/$distro/$release/arm64/$variant/$build_date/rootfs.tar.xz
+[[ "$quiet" = 1 ]] || echo
 [[ "$quiet" = 1 ]] || echo distro\: $distro
 [[ "$quiet" = 1 ]] || echo release\: $release
 [[ "$quiet" = 1 ]] || echo variant\: $variant
-[[ "$quiet" = 1 ]] || echo build_date\: $build_date
+[[ "$quiet" = 1 ]] || echo build_date\: $friendly_build_date
 [[ "$quiet" = 1 ]] || echo $UrL
 [[ "$quiet" = 1 ]] || echo
 [[ "$quiet" = 1 ]] || pause
-
+#exit 0
 clear
 #you can change to your image path if you have the correct permissions
 #otherwise it will download in folder
@@ -145,4 +172,4 @@ echo $fixTarball
 [[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE)"
 
 
-mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${build_date}.tar.xz
+mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${friendly_build_date}.tar.xz
