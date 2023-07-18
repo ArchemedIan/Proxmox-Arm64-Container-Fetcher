@@ -2,6 +2,9 @@
 UrL=https://images.linuxcontainers.org/images
 
 fixTarball () {
+echo $1
+echo $2
+#exit 0
 [[ -z "$1" ]] && return -1
 if [ "$1" = "interfaces" ]
 then
@@ -122,18 +125,19 @@ rm -rf rootfs.*
 [[ "$quiet" = 1 ]] || wget -nv --show-progress $UrL && wget -nv $UrL >/dev/null 2>&1
 
 fixTarball=0
-tar --wildcards -tf rootfs.tar */etc/network/interfaces >/dev/null 2>&1 || fixTarball=1
+tar --wildcards -tf rootfs.tar.xz */etc/network/interfaces >/dev/null 2>&1 || fixTarball=1
+echo $fixTarball
 
-if [ "$fixTarball" = 1 ]
-then
-	echo "decompressing tarball..."
-	unxz -T0 ./rootfs.tar.xz
-	fixTarball
-	echo "recompressing tarball..."
-	xz -T0 ./rootfs.tar	
-fi
+
+
+[[ "$fixTarball" = 1 ]] && echo "decompressing tarball..."
+[[ "$fixTarball" = 1 ]] && unxz -T0 ./rootfs.tar.xz
+[[ "$fixTarball" = 1 ]] && fixTarball interfaces $distro $release
+[[ "$fixTarball" = 1 ]] && echo "recompressing tarball..."
+[[ "$fixTarball" = 1 ]] && xz -T0 ./rootfs.tar
+
 
 [[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE)"
 
 
-mv rootfs.tar $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${build_date}.tar
+mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${build_date}.tar.xz
