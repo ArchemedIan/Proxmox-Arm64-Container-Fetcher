@@ -2,6 +2,9 @@
 UrL=https://images.linuxcontainers.org/images
 
 fixTarball () {
+echo $1
+echo $2
+#exit 0
 [[ -z "$1" ]] && return -1
 if [ "$1" = "interfaces" ]
 then
@@ -64,7 +67,7 @@ quiet=0
 [[ ! -z "$3" ]] && variant=$3
 [[ ! -z "$4" ]] && PaTh_tO_ImAgE_CaChE=$4 || PaTh_tO_ImAgE_CaChE="."
 [[ ! -z "$5" ]] && quiet=$5
-
+LUrL="$UrL"
 clear
 for UrlPart in distro release arm64 variant build_date
 do
@@ -73,14 +76,16 @@ do
 	then
 		build_date=$(curl --silent https://images.linuxcontainers.org/images/$distro/$release/arm64/$variant/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//' |cut -d '_' -f 1| sort -r |head -n 1)
 		build_date=$(curl --silent https://images.linuxcontainers.org/images/$distro/$release/arm64/$variant/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//' |grep -e "$build_date")
-		#UrL=$UrL/$build_date
+		LUrL=$LUrL/$build_date
 		continue
 	else
 		[[ ! -z "$1" ]] && continue
 		[[ ! -z "$2" ]] && continue
 		[[ ! -z "$3" ]] && continue
 	fi
-	LIST=($(curl --silent $UrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'))
+	LIST=($(curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'))
+	#echo ${LIST[@]}
+	#pause
 	echo
 	echo "#### Pimox Container image fetcher ####"
 	echo
@@ -88,6 +93,8 @@ do
 	select ITEM in ${LIST[@]}
 	do
 		[[ -z "$ITEM" ]] && continue
+		LUrL=$LUrL/$ITEM
+		#echo $LUrL
 		[[ "$UrlPart" = "distro" ]] && distro=$ITEM
 	    [[ "$UrlPart" = "release" ]] && release=$ITEM
 		[[ "$UrlPart" = "variant" ]] && variant=$ITEM
@@ -122,20 +129,19 @@ rm -rf rootfs.*
 [[ "$quiet" = 1 ]] || wget -nv --show-progress $UrL && wget -nv $UrL >/dev/null 2>&1
 
 fixTarball=0
-tar --wildcards -tf rootfs.tar */etc/network/interfaces >/dev/null 2>&1 || fixTarball=1
+tar --wildcards -tf rootfs.tar.xz */etc/network/interfaces >/dev/null 2>&1 || fixTarball=1
+echo $fixTarball
 
-if [ "$fixTarball" = 1 ]
-then
-	echo "decompressing tarball..."
-	unxz -T0 ./rootfs.tar.xz
-	fixTarball
-	echo "recompressing tarball..."
-	xz -T0 ./rootfs.tar
-else
-	
-fi
+
+
+[[ "$fixTarball" = 1 ]] && echo "decompressing tarball..."
+[[ "$fixTarball" = 1 ]] && unxz -T0 ./rootfs.tar.xz
+[[ "$fixTarball" = 1 ]] && fixTarball interfaces $distro $release
+[[ "$fixTarball" = 1 ]] && echo "recompressing tarball..."
+[[ "$fixTarball" = 1 ]] && xz -T0 ./rootfs.tar
+
 
 [[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE)"
 
 
-mv rootfs.tar $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${build_date}.tar
+mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${build_date}.tar.xz
