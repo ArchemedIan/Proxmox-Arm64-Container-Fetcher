@@ -8,8 +8,6 @@ then
 	if [ "$2" = "debian" ]
 	then
 		### uncompress todays rootfs tarball
-		echo "decompressing tarball..."
-		unxz -T0 ./rootfs.tar.xz
 		echo "applying fix(es)"
 
 		### debian switched to systemd-network or whatever, but prox expects ifupdown
@@ -41,7 +39,7 @@ then
 		thisdir=`pwd`
 		cd $mntdir
 		echo Recompressing tarball...
-		tar -cvzf $thisdir/rootfs.tar.xz .
+		tar -vcf $thisdir/rootfs.tar .
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
@@ -123,8 +121,21 @@ rm -rf rootfs.*
 [[ "$quiet" = 1 ]] || echo "Downloading rootfs..."
 [[ "$quiet" = 1 ]] || wget -nv --show-progress $UrL && wget -nv $UrL >/dev/null 2>&1
 
-tar --wildcards -tf rootfs.tar.xz */etc/network/interfaces >/dev/null 2>&1 || fixTarball interfaces $distro
+fixTarball=0
+tar --wildcards -tf rootfs.tar */etc/network/interfaces >/dev/null 2>&1 || fixTarball=1
+
+if [ "$fixTarball" = 1 ]
+then
+	echo "decompressing tarball..."
+	unxz -T0 ./rootfs.tar.xz
+	fixTarball
+	echo "recompressing tarball..."
+	xz -T0 ./rootfs.tar
+else
+	
+fi
 
 [[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE)"
 
-mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${build_date}.tar.xz
+
+mv rootfs.tar $PaTh_tO_ImAgE_CaChE/${distro}_arm64_${release}_${variant}_${build_date}.tar
