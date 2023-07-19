@@ -21,13 +21,13 @@ sudo bash ./pimox_image_fetcher.sh debian bullseye default /var/lib/vz/template/
 
 `./pimox_image_fetcher.sh `
 
-# With path
+###   interactive w/ path:
 
 `./pimox_image_fetcher.sh -1 -1 -1 /var/lib/vz/template/cache`
 
 ###   semi-interactive:
 
-`./pimox_image_fetcher.sh debian bullseye default /var/lib/vz/template/cache 0`
+`./pimox_image_fetcher.sh debian -1 default /var/lib/vz/template/cache 0`
 
 ###   silent
 
