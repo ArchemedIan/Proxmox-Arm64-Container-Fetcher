@@ -7,7 +7,7 @@ get arm64 LXC images for your Pimox installation
 well run this on your pimox!
 
 ```
-wget -Opimox_image_fetcher.sh https://raw.githubusercontent.com/ArchemedIan/Pimox-Container-Fetcher/main/pimox_image_fetcher.sh 
+wget -Opimox_image_fetcher.sh https://raw.githubusercontent.com/ArchemedIan/Proxmox-Arm64-Container-Fetcher/main/pimox_image_fetcher.sh 
 sudo bash ./pimox_image_fetcher.sh debian bullseye default /var/lib/vz/template/cache 0
 ```
 
