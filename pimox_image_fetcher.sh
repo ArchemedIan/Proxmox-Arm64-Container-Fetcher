@@ -29,7 +29,9 @@ fixTarball () {
 		pct stop 999999999
 		pct unmount 999999999
 		pct destroy 999999999
-		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage $(pvesm status |grep active |cut -d ' ' -f 1| head -n1) --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp
+  		sudo pvesm remove ctbuildtmp
+  		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp
+		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp
 		rm $(pwd)/rootfs.tar
 		pct start 999999999
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done"
