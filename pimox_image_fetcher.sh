@@ -153,7 +153,7 @@ function dlheader(){
 quiet=0
 [[ -z "$1" ]] && distro=-1 || distro=$1
 [[ -z "$2" ]] && release=-1 || release=$2
-if [ "$1" = "ubuntu" ] ; then
+if [ "$distro" = "ubuntu" ] ; then
 	if [ "$release" = "16.04" ] ; then
  		release=xenial
   	fi
@@ -314,6 +314,29 @@ fixTarball=1
 #echo $fixTarbal
 
 fixTarball $distro $release $variant
+
+if [ "$distro" = "ubuntu" ] ; then
+	if [ "$release" = "xenial" ] ; then
+ 		release=16.04
+  	fi
+   	if [ "$release" = "bionic" ] ; then
+ 		release=18.04
+  	fi
+   	if [ "$release" = "focal" ] ; then
+ 		release=20.04
+  	fi
+   	if [ "$release" = "jammy" ] ; then
+ 		release=22.04
+  	fi
+   	if [ "$release" = "lunar" ] ; then
+ 		release=23.04
+  	fi
+   	if [ "$release" = "mantic" ] ; then
+ 		release=23.10
+  	fi
+fi
+
+
 [[ "$quiet" = 1 ]] || echo
 [[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE/${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz)"
 
