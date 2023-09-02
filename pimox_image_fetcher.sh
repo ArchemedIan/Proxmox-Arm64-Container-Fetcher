@@ -1,8 +1,7 @@
 #!/bin/bash
 UrL=https://images.linuxcontainers.org/images
 LastDir=`pwd`
-mkdir /tmp/parm6rct
-cd /tmp/parm6rct
+ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rctcd /tmp/parm6rct
 fixTarball () {
 	#echo $1
 	#echo $2
