@@ -340,7 +340,7 @@ fi
 
 
 [[ "$quiet" = 1 ]] || echo
-[[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE/${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz)"
+[[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz)"
 
-mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
-[[ "$quiet" = 1 ]] && printf ${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
+mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz
+#[[ "$quiet" = 1 ]] && printf ${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
