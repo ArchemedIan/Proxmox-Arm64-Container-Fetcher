@@ -153,6 +153,26 @@ function dlheader(){
 quiet=0
 [[ -z "$1" ]] && distro=-1 || distro=$1
 [[ -z "$2" ]] && release=-1 || release=$2
+if [ "$1" = "ubuntu" ] ; then
+	if [ "$release" = "16.04" ] ; then
+ 		release=xenial
+  	fi
+   	if [ "$release" = "18.04" ] ; then
+ 		release=bionic
+  	fi
+   	if [ "$release" = "20.04" ] ; then
+ 		release=focal
+  	fi
+   	if [ "$release" = "22.04" ] ; then
+ 		release=jammy
+  	fi
+   	if [ "$release" = "23.04" ] ; then
+ 		release=lunar
+  	fi
+   	if [ "$release" = "23.10" ] ; then
+ 		release=mantic
+  	fi
+fi
 [[ -z "$3" ]] && variant=-1 || variant=$3
 [[ -z "$4" ]] && PaTh_tO_ImAgE_CaChE="." || PaTh_tO_ImAgE_CaChE=$4
 [[ -z "$5" ]] || quiet=$5
