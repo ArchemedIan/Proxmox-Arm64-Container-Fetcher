@@ -1,6 +1,8 @@
 #!/bin/bash
 UrL=https://images.linuxcontainers.org/images
-
+LastDir=`pwd`
+mkdir /tmp/parm6rct
+cd /tmp/parm6rct
 fixTarball () {
 	#echo $1
 	#echo $2
@@ -297,15 +299,15 @@ do
 	done
 done
 UrL=$UrL/$distro/$release/arm64/$variant/$build_date/rootfs.tar.xz
-clear
-echo
-header
-dlheader
+[[ "$quiet" = 1 ]] ||clear
+[[ "$quiet" = 1 ]] ||echo
+[[ "$quiet" = 1 ]] ||header
+[[ "$quiet" = 1 ]] ||dlheader
 [[ "$quiet" = 1 ]] || pause
 #exit 0
-clear
-header
-dlheader
+[[ "$quiet" = 1 ]] ||clear
+[[ "$quiet" = 1 ]] ||header
+[[ "$quiet" = 1 ]] ||dlheader
 #you can change to your image path if you have the correct permissions
 #otherwise it will download in folder
 
@@ -371,3 +373,4 @@ fi
 
 mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz
 #[[ "$quiet" = 1 ]] && printf ${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
+cd $LastDir
