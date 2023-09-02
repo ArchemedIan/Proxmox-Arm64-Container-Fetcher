@@ -49,7 +49,7 @@ fixTarball () {
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
-		
+		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
 		echo "recompressing tarball..."
 		xz -T0 ./rootfs.tar	
 	
