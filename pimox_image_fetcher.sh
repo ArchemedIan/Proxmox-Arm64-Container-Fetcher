@@ -155,6 +155,20 @@ function dlheader(){
 quiet=0
 [[ -z "$1" ]] && distro=-1 || distro=$1
 [[ -z "$2" ]] && release=-1 || release=$2
+if [ "$distro" = "debian" ] ; then
+	if [ "$release" = "unstable" ] ; then
+ 		release=sid
+  	fi
+   	if [ "$release" = "10" ] ; then
+ 		release=buster
+  	fi
+   	if [ "$release" = "11" ] ; then
+ 		release=bullseye
+  	fi
+   	if [ "$release" = "12" ] ; then
+ 		release=bookworm
+  	fi
+fi
 if [ "$distro" = "ubuntu" ] ; then
 	if [ "$release" = "16.04" ] ; then
  		release=xenial
@@ -316,7 +330,20 @@ fixTarball=1
 #echo $fixTarbal
 
 fixTarball $distro $release $variant
-
+if [ "$distro" = "debian" ] ; then
+	if [ "$release" = "sid" ] ; then
+ 		release=sid
+  	fi
+   	if [ "$release" = "buster" ] ; then
+ 		release=10
+  	fi
+   	if [ "$release" = "bullseye" ] ; then
+ 		release=11
+  	fi
+   	if [ "$release" = "bookworm" ] ; then
+ 		release=12
+  	fi
+fi
 if [ "$distro" = "ubuntu" ] ; then
 	if [ "$release" = "xenial" ] ; then
  		release=16.04
