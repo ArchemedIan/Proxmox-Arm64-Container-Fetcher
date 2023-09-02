@@ -126,7 +126,8 @@ function pause(){
 }
 
 function header(){
-	clear
+	[[ "$quiet" = 1 ]] && return 0
+        clear
 	echo 
 	echo "#### Pimox Container image fetcher ####"
 	echo
@@ -140,6 +141,7 @@ function header(){
 }
 
 function dlheader(){
+
 [[ "$quiet" = 1 ]] || echo "latest build date: $friendly_build_date"
 [[ "$quiet" = 1 ]] || echo "latest build time: $friendly_build_time"
 [[ "$quiet" = 1 ]] || echo
@@ -341,3 +343,4 @@ fi
 [[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE/${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz)"
 
 mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
+[[ "$quiet" = 1 ]] && printf ${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
