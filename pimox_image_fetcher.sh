@@ -36,9 +36,9 @@ fixTarball () {
 		rm $(pwd)/rootfs.tar
 		pct start 999999999
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done"
-		pct exec 999999999 apt update
-		pct exec 999999999 apt install ifupdown wget -y
-		pct exec 999999999 sudo mv /etc/systemd/network/eth0.{network,off}
+		pct exec 999999999 -- apt update
+		pct exec 999999999 -- apt install ifupdown wget -y
+		pct exec 999999999 -- sudo mv /etc/systemd/network/eth0.{network,off}
 		pct stop 999999999
 		pct unmount 999999999
 		pct mount 999999999
@@ -127,8 +127,8 @@ fixTarball () {
 		rm $(pwd)/rootfs.tar
 		pct start 999999999
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done"
-		pct exec 999999999 apt update
-		pct exec 999999999 apt install wget -y
+		pct exec 999999999 -- apt update
+		pct exec 999999999 -- apt install wget -y
 		pct stop 999999999
 		pct unmount 999999999
 		pct mount 999999999
