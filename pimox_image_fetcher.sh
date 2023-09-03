@@ -112,9 +112,10 @@ fixTarball () {
 		fi
   	elif [ "$1" = "ubuntu" ] ; then
    		### uncompress todays rootfs tarball
-		[[ "$quiet" -gt 0 ]] || echo "decompressing tarball..."
+		[[ "$quiet" -gt 0 ]] || echo "Decompressing Tarball..."
+  		[[ "$quiet" -gt 4 ]] || msg_info "Decompressing Tarball..."
 		unxz -T0 ./rootfs.tar.xz
-		
+		[[ "$quiet" -gt 4 ]] || msg_ok "Decompressed Tarball..."
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
 		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
 		pct stop 999999999
