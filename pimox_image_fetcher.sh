@@ -9,10 +9,10 @@ fixTarball () {
 	[[ -z "$1" ]] && return -1
 	if [ "$1" = "debian" ] ; then
 		### uncompress todays rootfs tarball
-		echo "decompressing tarball..."
+		[[ "$quiet" -gt 0 ]] || echo "decompressing tarball..."
 		unxz -T0 ./rootfs.tar.xz
 		
-		echo "applying fix(es)"
+		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
 		### debian switched to systemd-network or whatever, but prox expects ifupdown
 		## create files proxmox expects
 		rm -rf ./etc
@@ -24,7 +24,7 @@ fixTarball () {
 		tar -rf ./rootfs.tar ./etc/network
 		tar -rf ./rootfs.tar ./etc/network/interfaces
 		rm -rf ./etc
-		echo "create temporary container..."
+		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
 		pct stop 999999999
 		pct unmount 999999999
 		pct destroy 999999999
@@ -43,8 +43,8 @@ fixTarball () {
 		mntdir=`mount |grep -e "999999999/rootfs" | awk '{print $3}'`
 		thisdir=`pwd`
 		cd $mntdir
-		echo Recompressing tarball...
-  		tar -vc . |xz -0T0 >$thisdir/rootfs.tar.xz
+		[[ "$quiet" -gt 0 ]] || echo Recompressing tarball...
+  		tar -c . |xz -0T0 >$thisdir/rootfs.tar.xz
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
@@ -110,11 +110,11 @@ fixTarball () {
 		fi
   	elif [ "$1" = "ubuntu" ] ; then
    		### uncompress todays rootfs tarball
-		echo "decompressing tarball..."
+		[[ "$quiet" -gt 0 ]] || echo "decompressing tarball..."
 		unxz -T0 ./rootfs.tar.xz
 		
-		echo "applying fix(es)"
-		echo "create temporary container..."
+		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
+		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
 		pct stop 999999999
 		pct unmount 999999999
 		pct destroy 999999999
@@ -132,8 +132,8 @@ fixTarball () {
 		mntdir=`mount |grep -e "999999999/rootfs" | awk '{print $3}'`
 		thisdir=`pwd`
 		cd $mntdir
-		echo Recompressing tarball...
-		tar -vc . |xz -0T0 >$thisdir/rootfs.tar.xz
+		[[ "$quiet" -gt 0 ]] || echo Recompressing tarball...
+		tar -c . |xz -0T0 >$thisdir/rootfs.tar.xz
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
