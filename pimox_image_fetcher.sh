@@ -27,7 +27,7 @@ fixTarball () {
 	#echo $1
 	#echo $2
 	#exit 0
-	&& return -1
+	[[ -z "$1" ]] && return -1
 	if [ "$1" = "debian" ] ; then
 		### uncompress todays rootfs tarball
 		[[ "$quiet" -gt 0 ]] || echo "Decompressing Tarball..."
