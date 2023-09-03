@@ -2,7 +2,27 @@
 UrL=https://images.linuxcontainers.org/images
 LastDir=`pwd`
 ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rctcd /tmp/parm6rct
-source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
+  YW=$(echo "\033[33m")
+  BL=$(echo "\033[36m")
+  RD=$(echo "\033[01;31m")
+  BGN=$(echo "\033[4;92m")
+  GN=$(echo "\033[1;92m")
+  DGN=$(echo "\033[32m")
+  CL=$(echo "\033[m")
+  CM="${GN}✓${CL}"
+  CROSS="${RD}✗${CL}"
+  BFR="\\r\\033[K"
+  HOLD="-"
+msg_info() {
+  local msg="$1"
+  echo -ne " ${HOLD} ${YW}${msg}..."
+}
+
+# This function displays a success message with a green color.
+msg_ok() {
+  local msg="$1"
+  echo -e "${BFR} ${CM} ${GN}${msg}${CL}"
+}
 fixTarball () {
 	#echo $1
 	#echo $2
