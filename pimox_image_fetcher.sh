@@ -161,7 +161,7 @@ function pause(){
 
 function header(){
 	[[ "$quiet" -gt 0 ]] && return 0
-        clear
+        [[ "$quiet" -gt 0 ]] ||clear
 	echo 
 	echo "#### Pimox Container image fetcher ####"
 	echo
@@ -230,7 +230,7 @@ fi
 echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
 #exit 0
 LUrL="$UrL"
-clear
+[[ "$quiet" -gt 4 ]] ||clear
 for UrlPart in distro release arm64 variant build_date
 do
 	if [ "$UrlPart" = "arm64" ] ; then
@@ -249,7 +249,7 @@ do
 		# -e "springdalelinux" -e "pld" -e "" -e "" -e "" 
 		supportedLIST=($(curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'| grep -v -e "pld" -e "springdalelinux" -e "plamo" -e "plamo" -e "mint" -e "almalinux" -e "amazonlinux" -e "alt" -e "funtoo" -e "openeuler" -e "openwrt" -e "voidlinux")) 
 		unsupportedLIST=($(curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'| grep -e "pld" -e "springdalelinux" -e "plamo" -e "plamo" -e "mint" -e "almalinux" -e "amazonlinux" -e "alt" -e "funtoo" -e "openeuler" -e "openwrt" -e "voidlinux"))
-		header
+		[[ "$quiet" -gt 0 ]] ||header
 		PS3=$(echo ; echo "## Pick a $UrlPart: ")
 		while true ; do
 			select ITEM in ${supportedLIST[@]} \<Unsupported\ Distro\ List\>
@@ -257,7 +257,7 @@ do
 				[[ -z "$ITEM" ]] && continue
 				Back=0
 				if [ "$ITEM" = "<Unsupported Distro List>" ] ; then
-					header
+					[[ "$quiet" -gt 0 ]] ||header
 					PS3=$(echo ; echo "## Pick a $UrlPart: ")
 					select ITEM in \<Supported\ Distro\ List\> ${unsupportedLIST[@]} 
 					do
@@ -271,8 +271,8 @@ do
 				echo "$ITEM"
 				fi
 				if [ "$Back" = 1 ]  ; then
-					clear
-					header
+					[[ "$quiet" -gt 0 ]] ||clear
+					[[ "$quiet" -gt 0 ]] ||header
 					PS3=$(echo ; echo "## Pick a $UrlPart: ")
 					break
 				fi
@@ -316,7 +316,7 @@ do
 
 	#LIST=($(test $ListSort -eq 1 && curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'|sort -r || curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'))
 	ListSort=0
-	header
+	[[ "$quiet" -gt 0 ]] ||header
 	PS3=$(echo ; echo "## Pick a $UrlPart: ")
 	select ITEM in ${LIST[@]}
 	do
