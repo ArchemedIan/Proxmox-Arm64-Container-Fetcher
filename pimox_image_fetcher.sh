@@ -229,7 +229,7 @@ function dlheader(){
 
 
 quiet=0
-if [ -z "$FetCHerARgs" ] ; then
+if [ ! -z "$FetCHerARgs" ] ; then
 	distro=${FetCHerARgs[0]}
  	release=${FetCHerARgs[1]}
   	variant=${FetCHerARgs[2]}
