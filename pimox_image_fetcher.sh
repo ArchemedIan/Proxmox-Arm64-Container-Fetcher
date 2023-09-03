@@ -110,7 +110,39 @@ fixTarball () {
 			echo
 			pause
 		fi
-	elif [ "$1" = "alpine" ] || [ "$1" = "arch" ] || [ "$1" = "centos" ] || [ "$1" = "devuan" ] || [ "$1" = "kali" ] || [ "$1" = "ubuntu" ]; then 
+  	elif [ "$1" = "ubuntu" ] ; then
+   		### uncompress todays rootfs tarball
+		echo "decompressing tarball..."
+		unxz -T0 ./rootfs.tar.xz
+		
+		echo "applying fix(es)"
+		echo "create temporary container..."
+		pct stop 999999999
+		pct unmount 999999999
+		pct destroy 999999999
+  		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
+  		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp
+		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype ubuntu --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp
+		rm $(pwd)/rootfs.tar
+		pct start 999999999
+		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done"
+		pct exec 999999999 apt update
+		pct exec 999999999 apt install wget
+		pct stop 999999999
+		pct unmount 999999999
+		pct mount 999999999
+		mntdir=`mount |grep -e "999999999/rootfs" | awk '{print $3}'`
+		thisdir=`pwd`
+		cd $mntdir
+		echo Recompressing tarball...
+		tar -vcf $thisdir/rootfs.tar .
+		cd $thisdir
+		pct unmount 999999999
+		pct destroy 999999999
+		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
+		echo "recompressing tarball..."
+		xz -T0 ./rootfs.tar	
+	elif [ "$1" = "alpine" ] || [ "$1" = "arch" ] || [ "$1" = "centos" ] || [ "$1" = "devuan" ] || [ "$1" = "kali" ]; then 
 		echo
 	else
 		echo "$1 not supported by pimox, image may not work (let me know if you find a fix)"
