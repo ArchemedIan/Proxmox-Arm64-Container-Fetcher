@@ -44,13 +44,11 @@ fixTarball () {
 		thisdir=`pwd`
 		cd $mntdir
 		echo Recompressing tarball...
-		tar -vcf $thisdir/rootfs.tar .
+  		tar -vc . | xz -0T0 > $thisdir/rootfs.tar.xz
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
 		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
-		echo "recompressing tarball..."
-		xz -T0 ./rootfs.tar	
 	
 	elif [ "$1" = "apertis" ] ; then
 		echo "$1 will boot, but the network settings in the webgui are ignored."
@@ -135,13 +133,11 @@ fixTarball () {
 		thisdir=`pwd`
 		cd $mntdir
 		echo Recompressing tarball...
-		tar -vcf $thisdir/rootfs.tar .
+		tar -vc . | xz -0T0 > $thisdir/rootfs.tar.xz
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
-		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
-		echo "recompressing tarball..."
-		xz -T0 ./rootfs.tar	
+		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp	
 	elif [ "$1" = "alpine" ] || [ "$1" = "arch" ] || [ "$1" = "centos" ] || [ "$1" = "devuan" ] || [ "$1" = "kali" ]; then 
 		echo
 	else
