@@ -27,7 +27,7 @@ fixTarball () {
 	#echo $1
 	#echo $2
 	#exit 0
-	[[ -z "$1" ]] && return -1
+	&& return -1
 	if [ "$1" = "debian" ] ; then
 		### uncompress todays rootfs tarball
 		[[ "$quiet" -gt 0 ]] || echo "Decompressing Tarball..."
@@ -229,48 +229,56 @@ function dlheader(){
 
 
 quiet=0
-[[ -z "$1" ]] && distro=-1 || distro=$1
-[[ -z "$2" ]] && release=-1 || release=$2
-if [ "$distro" = "debian" ] ; then
-	if [ "$release" = "unstable" ] ; then
- 		release=sid
-  	fi
-   	if [ "$release" = "10" ] ; then
- 		release=buster
-  	fi
-   	if [ "$release" = "11" ] ; then
- 		release=bullseye
-  	fi
-   	if [ "$release" = "12" ] ; then
- 		release=bookworm
-  	fi
-fi
-if [ "$distro" = "ubuntu" ] ; then
-	if [ "$release" = "16.04" ] ; then
- 		release=xenial
-  	fi
-   	if [ "$release" = "18.04" ] ; then
- 		release=bionic
-  	fi
-   	if [ "$release" = "20.04" ] ; then
- 		release=focal
-  	fi
-   	if [ "$release" = "22.04" ] ; then
- 		release=jammy
-  	fi
-   	if [ "$release" = "23.04" ] ; then
- 		release=lunar
-  	fi
-   	if [ "$release" = "23.10" ] ; then
- 		release=mantic
-  	fi
-fi
-[[ -z "$3" ]] && variant=-1 || variant=$3
-[[ -z "$4" ]] && PaTh_tO_ImAgE_CaChE="." || PaTh_tO_ImAgE_CaChE=$4
-[[ -z "$5" ]] || quiet=$5
+if [ -z "$FetCHerARgs" ] ; then
+	distro=${FetCHerARgs[0]}
+ 	release=${FetCHerARgs[1]}
+  	variant=${FetCHerARgs[2]}
+	PaTh_tO_ImAgE_CaChE=${FetCHerARgs[3]}
+	quiet=${FetCHerARgs[4]}
+else
 
+	[[ -z "$1" ]] && distro=-1 || distro=$1
+	[[ -z "$2" ]] && release=-1 || release=$2
+	if [ "$distro" = "debian" ] ; then
+		if [ "$release" = "unstable" ] ; then
+			release=sid
+		fi
+		if [ "$release" = "10" ] ; then
+			release=buster
+		fi
+		if [ "$release" = "11" ] ; then
+			release=bullseye
+		fi
+		if [ "$release" = "12" ] ; then
+			release=bookworm
+		fi
+	fi
+	if [ "$distro" = "ubuntu" ] ; then
+		if [ "$release" = "16.04" ] ; then
+			release=xenial
+		fi
+		if [ "$release" = "18.04" ] ; then
+			release=bionic
+		fi
+		if [ "$release" = "20.04" ] ; then
+			release=focal
+		fi
+		if [ "$release" = "22.04" ] ; then
+			release=jammy
+		fi
+		if [ "$release" = "23.04" ] ; then
+			release=lunar
+		fi
+		if [ "$release" = "23.10" ] ; then
+			release=mantic
+		fi
+	fi
+	[[ -z "$3" ]] && variant=-1 || variant=$3
+	[[ -z "$4" ]] && PaTh_tO_ImAgE_CaChE="." || PaTh_tO_ImAgE_CaChE=$4
+	[[ -z "$5" ]] || quiet=$5
+fi
 echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
-#exit 0
+exit 0
 LUrL="$UrL"
 [[ "$quiet" -gt 4 ]] ||clear
 for UrlPart in distro release arm64 variant build_date
