@@ -318,11 +318,13 @@ do
 	select ITEM in ${LIST[@]}
 	do
 		[[ -z "$ITEM" ]] && continue
+  		[[ "$UrlPart" = "release" ]] && ITEM=$(echo $ITEM|sed -e 's/^16.04(xenial)$/xenial/' -e 's/^18.04(bionic)$/bionic/' -e 's/^20.04(focal)$/focal/' -e 's/^22.04(jammy)$/jammy/' -e 's/^23.04(lunar)$/lunar/' -e 's/^23.10(mantic)$/mantic/' -e 's/^10(buster)$/buster/' -e 's/^11(bullseye)$/bullseye/' -e 's/^12(bookworm)$/bookworm/')
+		
 		LUrL=$LUrL/$ITEM
 		#echo $LUrL
 		[[ "$UrlPart" = "distro" ]] && distro=$ITEM
-	    [[ "$UrlPart" = "release" ]] && release=$(echo $ITEM|sed -e 's/^16.04(xenial)$/xenial/' -e 's/^18.04(bionic)$/bionic/' -e 's/^20.04(focal)$/focal/' -e 's/^22.04(jammy)$/jammy/' -e 's/^23.04(lunar)$/lunar/' -e 's/^23.10(mantic)$/mantic/' -e 's/^10(buster)$/buster/' -e 's/^11(bullseye)$/bullseye/' -e 's/^12(bookworm)$/bookworm/')
-		[[ "$UrlPart" = "variant" ]] && variant=$ITEM
+  		[[ "$UrlPart" = "release" ]] && release=$ITEM
+     		[[ "$UrlPart" = "variant" ]] && variant=$ITEM
 		
 		break
 	done
