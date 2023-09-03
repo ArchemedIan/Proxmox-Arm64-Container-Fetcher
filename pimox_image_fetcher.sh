@@ -332,7 +332,8 @@ fixTarball=0
 fixTarball=1
 #echo $fixTarbal
 
-[[ "$quiet" = 1 ]] && fixTarball $distro $release $variant >/dev/null 2>/dev/null || fixTarball $distro $release $variant
+#[[ "$quiet" = 1 ]] && fixTarball $distro $release $variant >/dev/null 2>/dev/null || fixTarball $distro $release $variant
+fixTarball $distro $release $variant
 if [ "$distro" = "debian" ] ; then
 	if [ "$release" = "sid" ] ; then
  		release=sid
