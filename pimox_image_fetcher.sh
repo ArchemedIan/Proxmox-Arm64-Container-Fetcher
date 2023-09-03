@@ -53,7 +53,7 @@ fixTarball () {
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
+  		pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
 		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
@@ -65,7 +65,7 @@ fixTarball () {
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
 		pct exec 999999999 -- apt update >/dev/null 2>&1
 		pct exec 999999999 -- apt install ifupdown wget -y >/dev/null 2>&1
-		pct exec 999999999 -- sudo mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
+		pct exec 999999999 -- mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
   		[[ "$quiet" -gt 4 ]] && msg_ok "Updated Image And Applied Fix(es)"
@@ -80,7 +80,7 @@ fixTarball () {
 		cd $thisdir
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
+		pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
 	
 	elif [ "$1" = "apertis" ] ; then
 		echo "$1 will boot, but the network settings in the webgui are ignored."
@@ -155,7 +155,7 @@ fixTarball () {
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
+  		pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
 		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
@@ -167,7 +167,7 @@ fixTarball () {
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
 		pct exec 999999999 -- apt update >/dev/null 2>&1
 		pct exec 999999999 -- apt install wget -y >/dev/null 2>&1
-		pct exec 999999999 -- sudo mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
+		pct exec 999999999 -- mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
   		[[ "$quiet" -gt 4 ]] && msg_ok "Updated Image And Applied Fix(es)"
@@ -182,7 +182,7 @@ fixTarball () {
 		cd $thisdir
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
+		pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
 	elif [ "$1" = "alpine" ] || [ "$1" = "arch" ] || [ "$1" = "centos" ] || [ "$1" = "devuan" ] || [ "$1" = "kali" ]; then 
 		echo
 	else
