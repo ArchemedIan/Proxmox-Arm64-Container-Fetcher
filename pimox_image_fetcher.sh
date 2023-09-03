@@ -2,6 +2,7 @@
 UrL=https://images.linuxcontainers.org/images
 LastDir=`pwd`
 ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rctcd /tmp/parm6rct
+[[ "$quiet" -gt 4 ]] || source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
 fixTarball () {
 	#echo $1
 	#echo $2
@@ -9,9 +10,10 @@ fixTarball () {
 	[[ -z "$1" ]] && return -1
 	if [ "$1" = "debian" ] ; then
 		### uncompress todays rootfs tarball
-		[[ "$quiet" -gt 0 ]] || echo "decompressing tarball..."
+		[[ "$quiet" -gt 0 ]] || echo "Decompressing Tarball..."
+  		[[ "$quiet" -gt 4 ]] || msg_info "Decompressing Tarball..."
 		unxz -T0 ./rootfs.tar.xz
-		
+		[[ "$quiet" -gt 4 ]] || msg_ok "Decompressed Tarball..."
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
 		### debian switched to systemd-network or whatever, but prox expects ifupdown
 		## create files proxmox expects
