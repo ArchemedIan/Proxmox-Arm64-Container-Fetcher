@@ -44,7 +44,7 @@ fixTarball () {
 		thisdir=`pwd`
 		cd $mntdir
 		echo Recompressing tarball...
-  		tar -vc . | xz -0T0 > $thisdir/rootfs.tar.xz
+  		tar -J0 -vcf $thisdir/rootfs.tar.xz .
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
@@ -133,7 +133,7 @@ fixTarball () {
 		thisdir=`pwd`
 		cd $mntdir
 		echo Recompressing tarball...
-		tar -vc . | xz -0T0 > $thisdir/rootfs.tar.xz
+		tar -J0 -vcf $thisdir/rootfs.tar.xz .
 		cd $thisdir
 		pct unmount 999999999
 		pct destroy 999999999
