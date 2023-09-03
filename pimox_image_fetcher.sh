@@ -322,6 +322,7 @@ do
 
 		LUrL=$LUrL/$ITEM
 		echo $LUrL
+                pause
 		[[ "$UrlPart" = "distro" ]] && distro=$ITEM
   		[[ "$UrlPart" = "release" ]] && release=$ITEM
      		[[ "$UrlPart" = "variant" ]] && variant=$ITEM
