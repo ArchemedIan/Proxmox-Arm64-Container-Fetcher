@@ -80,7 +80,7 @@ fixTarball () {
 		cd $thisdir
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
+		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
 	
 	elif [ "$1" = "apertis" ] ; then
 		echo "$1 will boot, but the network settings in the webgui are ignored."
@@ -182,7 +182,7 @@ fixTarball () {
 		cd $thisdir
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
+		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
 	elif [ "$1" = "alpine" ] || [ "$1" = "arch" ] || [ "$1" = "centos" ] || [ "$1" = "devuan" ] || [ "$1" = "kali" ]; then 
 		echo
 	else
