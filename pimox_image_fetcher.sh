@@ -2,7 +2,7 @@
 UrL=https://images.linuxcontainers.org/images
 LastDir=`pwd`
 ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rctcd /tmp/parm6rct
-[[ "$quiet" -gt 4 ]] && source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
+source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
 fixTarball () {
 	#echo $1
 	#echo $2
@@ -230,7 +230,7 @@ fi
 echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
 #exit 0
 LUrL="$UrL"
-[[ "$quiet" -gt 4 ]] &&clear
+[[ "$quiet" -gt 4 ]] ||clear
 for UrlPart in distro release arm64 variant build_date
 do
 	if [ "$UrlPart" = "arm64" ] ; then
