@@ -32,7 +32,7 @@ fixTarball () {
 		pct destroy 999999999 >/dev/null 2>&1
   		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
-		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp
+		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
 		pct start 999999999 >/dev/null 2>&1
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
@@ -123,7 +123,7 @@ fixTarball () {
 		pct destroy 999999999 >/dev/null 2>&1
   		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
-		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype ubuntu --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp
+		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype ubuntu --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
 		pct start 999999999 >/dev/null 2>&1
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
