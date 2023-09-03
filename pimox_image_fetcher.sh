@@ -157,7 +157,7 @@ function pause(){
 }
 
 function header(){
-	[[ "$quiet" = 1 ]] && return 0
+	[[ "$quiet" -gt 0 ]] && return 0
         clear
 	echo 
 	echo "#### Pimox Container image fetcher ####"
@@ -173,11 +173,11 @@ function header(){
 
 function dlheader(){
 
-[[ "$quiet" = 1 ]] || echo "latest build date: $friendly_build_date"
-[[ "$quiet" = 1 ]] || echo "latest build time: $friendly_build_time"
-[[ "$quiet" = 1 ]] || echo
-[[ "$quiet" = 1 ]] || echo "Download URL: $UrL"
-[[ "$quiet" = 1 ]] || echo
+[[ "$quiet" -gt 0 ]] || echo "latest build date: $friendly_build_date"
+[[ "$quiet" -gt 0 ]] || echo "latest build time: $friendly_build_time"
+[[ "$quiet" -gt 0 ]] || echo
+[[ "$quiet" -gt 0 ]] || echo "Download URL: $UrL"
+[[ "$quiet" -gt 0 ]] || echo
 
 }
 #################################EndFunctions#######################################
@@ -331,39 +331,39 @@ do
 	done
 done
 UrL=$UrL/$distro/$release/arm64/$variant/$build_date/rootfs.tar.xz
-[[ "$quiet" = 1 ]] ||clear
-[[ "$quiet" = 1 ]] ||echo
-[[ "$quiet" = 1 ]] ||header
-[[ "$quiet" = 1 ]] ||dlheader
-[[ "$quiet" = 1 ]] || pause
+[[ "$quiet" -gt 0 ]] ||clear
+[[ "$quiet" -gt 0 ]] ||echo
+[[ "$quiet" -gt 0 ]] ||header
+[[ "$quiet" -gt 0 ]] ||dlheader
+[[ "$quiet" -gt 0 ]] || pause
 #exit 0
-[[ "$quiet" = 1 ]] ||clear
-[[ "$quiet" = 1 ]] ||header
-[[ "$quiet" = 1 ]] ||dlheader
+[[ "$quiet" -gt 0 ]] ||clear
+[[ "$quiet" -gt 0 ]] ||header
+[[ "$quiet" -gt 0 ]] ||dlheader
 #you can change to your image path if you have the correct permissions
 #otherwise it will download in folder
 
 [[ "$PaTh_tO_ImAgE_CaChE" = "." ]] && PaTh_tO_ImAgE_CaChE=$(pwd)
-[[ "$quiet" = 1 ]] || echo "Checking Url"
+[[ "$quiet" -gt 0 ]] || echo "Checking Url"
 badurl=0
 curl --output /dev/null --silent --head --fail "$UrL" || badurl=1 
 [[ "$badurl" = 1 ]] && echo "bad url, check internet?" || echo "url is valid"
 [[ "$badurl" = 1 ]] && exit 0
-[[ "$quiet" = 1 ]] || echo
+[[ "$quiet" -gt 0 ]] || echo
 
 ## cleanup from last time
 rm -rf ./rootfs*
 sleep 2
 ##time to DL
-[[ "$quiet" = 1 ]] || echo "Downloading rootfs..."
-[[ "$quiet" = 1 ]] || wget -Orootfs.tar.xz -q -nv --show-progress $UrL && wget -Orootfs.tar.xz -q -nv $UrL 
-[[ "$quiet" = 1 ]] || echo
+[[ "$quiet" -gt 0 ]] || echo "Downloading rootfs..."
+[[ "$quiet" -gt 0 ]] || wget -Orootfs.tar.xz -q -nv --show-progress $UrL && wget -Orootfs.tar.xz -q -nv $UrL 
+[[ "$quiet" -gt 0 ]] || echo
 fixTarball=0
 #tar --wildcards -tf rootfs.tar.xz */etc/network/interfaces >/dev/null 2>&1 || 
 fixTarball=1
 #echo $fixTarbal
 
-#[[ "$quiet" = 1 ]] && fixTarball $distro $release $variant >/dev/null 2>/dev/null || fixTarball $distro $release $variant
+#[[ "$quiet" -gt 0 ]] && fixTarball $distro $release $variant >/dev/null 2>/dev/null || fixTarball $distro $release $variant
 fixTarball $distro $release $variant
 if [ "$distro" = "debian" ] ; then
 	if [ "$release" = "sid" ] ; then
@@ -401,9 +401,9 @@ if [ "$distro" = "ubuntu" ] ; then
 fi
 
 
-[[ "$quiet" = 1 ]] || echo
-[[ "$quiet" = 1 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz)"
+[[ "$quiet" -gt 0 ]] || echo
+[[ "$quiet" -gt 0 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz)"
 
 mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz
-#[[ "$quiet" = 1 ]] && printf ${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
+#[[ "$quiet" -gt 0 ]] && printf ${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
 cd $LastDir
