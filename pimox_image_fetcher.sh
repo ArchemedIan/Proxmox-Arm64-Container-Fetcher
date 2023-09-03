@@ -53,7 +53,7 @@ fixTarball () {
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
+  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
 		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
@@ -155,7 +155,7 @@ fixTarball () {
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
-  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
+  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp >/dev/null 2>/dev/null
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
 		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
@@ -410,7 +410,7 @@ fi
 [[ "$quiet" -gt 0 ]] || echo
 
 ## cleanup from last time
-rm -rf ./rootfs*
+rm -rf ./rootfs* >/dev/null 2>/dev/null
 sleep 2
 ##time to DL
 [[ "$quiet" -gt 0 ]] || echo "Downloading rootfs..."
