@@ -35,6 +35,7 @@ fixTarball () {
 		unxz -T0 ./rootfs.tar.xz
 		[[ "$quiet" -gt 4 ]] && msg_ok "Decompressed Tarball"
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
+    		[[ "$quiet" -gt 4 ]] && msg_info "Prepping Arm64 fix(es)"
 		### debian switched to systemd-network or whatever, but prox expects ifupdown
 		## create files proxmox expects
 		rm -rf ./etc >/dev/null 2>&1
@@ -46,7 +47,9 @@ fixTarball () {
 		tar -rf ./rootfs.tar ./etc/network
 		tar -rf ./rootfs.tar ./etc/network/interfaces
 		rm -rf ./etc 
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Prepped Arm64 fix(es)"
 		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
+  		[[ "$quiet" -gt 4 ]] && msg_info "Create Temporary Container to Apply Fix(es)"
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
@@ -54,19 +57,26 @@ fixTarball () {
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
 		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Created Temporary Container to Apply Fix(es)"
+    		[[ "$quiet" -gt 4 ]] && msg_info "Starting Temporary Container"
 		pct start 999999999 >/dev/null 2>&1
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Started Temporary Container"
+    		[[ "$quiet" -gt 4 ]] && msg_info "Updating Image And Applying Fix(es)"
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
 		pct exec 999999999 -- apt update >/dev/null 2>&1
 		pct exec 999999999 -- apt install ifupdown wget -y >/dev/null 2>&1
 		pct exec 999999999 -- sudo mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Updated Image And Applied Fix(es)"
 		pct mount 999999999 >/dev/null 2>&1
 		mntdir=`mount |grep -e "999999999/rootfs" | awk '{print $3}'`
 		thisdir=`pwd`
 		cd $mntdir
 		[[ "$quiet" -gt 0 ]] || echo Recompressing tarball...
+  		[[ "$quiet" -gt 4 ]] && msg_info "Recompressing Tarball"
   		tar -c . |xz -0T0 >$thisdir/rootfs.tar.xz
+    		[[ "$quiet" -gt 4 ]] && msg_ok "Recompressed Tarball"
 		cd $thisdir
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
@@ -137,30 +147,42 @@ fixTarball () {
 		unxz -T0 ./rootfs.tar.xz
 		[[ "$quiet" -gt 4 ]] && msg_ok "Decompressed Tarball"
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
+    		[[ "$quiet" -gt 4 ]] && msg_info "Prepping Arm64 fix(es)"
+		
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Prepped Arm64 fix(es)"
 		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
+  		[[ "$quiet" -gt 4 ]] && msg_info "Create Temporary Container to Apply Fix(es)"
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
 		pct destroy 999999999 >/dev/null 2>&1
   		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
   		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
-		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype ubuntu --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
+		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp >/dev/null 2>&1
 		rm $(pwd)/rootfs.tar >/dev/null 2>&1
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Created Temporary Container to Apply Fix(es)"
+    		[[ "$quiet" -gt 4 ]] && msg_info "Starting Temporary Container"
 		pct start 999999999 >/dev/null 2>&1
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Started Temporary Container"
+    		[[ "$quiet" -gt 4 ]] && msg_info "Updating Image And Applying Fix(es)"
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
 		pct exec 999999999 -- apt update >/dev/null 2>&1
 		pct exec 999999999 -- apt install wget -y >/dev/null 2>&1
+		pct exec 999999999 -- sudo mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
+  		[[ "$quiet" -gt 4 ]] && msg_ok "Updated Image And Applied Fix(es)"
 		pct mount 999999999 >/dev/null 2>&1
 		mntdir=`mount |grep -e "999999999/rootfs" | awk '{print $3}'`
 		thisdir=`pwd`
 		cd $mntdir
 		[[ "$quiet" -gt 0 ]] || echo Recompressing tarball...
-		tar -c . |xz -0T0 >$thisdir/rootfs.tar.xz
+  		[[ "$quiet" -gt 4 ]] && msg_info "Recompressing Tarball"
+  		tar -c . |xz -0T0 >$thisdir/rootfs.tar.xz
+    		[[ "$quiet" -gt 4 ]] && msg_ok "Recompressed Tarball"
 		cd $thisdir
 		pct unmount 999999999 >/dev/null 2>&1
-		pct destroy 999999999 >/dev/null 2>&1 
-		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp	
+		pct destroy 999999999 >/dev/null 2>&1
+		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
 	elif [ "$1" = "alpine" ] || [ "$1" = "arch" ] || [ "$1" = "centos" ] || [ "$1" = "devuan" ] || [ "$1" = "kali" ]; then 
 		echo
 	else
@@ -384,7 +406,9 @@ rm -rf ./rootfs*
 sleep 2
 ##time to DL
 [[ "$quiet" -gt 0 ]] || echo "Downloading rootfs..."
-[[ "$quiet" -gt 0 ]] || wget -Orootfs.tar.xz -q -nv --show-progress $UrL && wget -Orootfs.tar.xz -q -nv $UrL 
+[[ "$quiet" -gt 4 ]] && msg_info "Downloading rootfs"
+[[ "$quiet" -gt 0 ]] && wget -Orootfs.tar.xz -q -nv $UrL|| wget -Orootfs.tar.xz -q -nv --show-progress $UrL  
+[[ "$quiet" -gt 4 ]] && msg_ok "Downloaded rootfs"
 [[ "$quiet" -gt 0 ]] || echo
 fixTarball=0
 #tar --wildcards -tf rootfs.tar.xz */etc/network/interfaces >/dev/null 2>&1 || 
@@ -431,7 +455,8 @@ fi
 
 [[ "$quiet" -gt 0 ]] || echo
 [[ "$quiet" -gt 0 ]] || echo "moving to image directory ($PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz)"
-
+[[ "$quiet" -gt 4 ]] && msg_info "Moving rootfs"
 mv rootfs.tar.xz $PaTh_tO_ImAgE_CaChE/${distro}-${release}-${variant}-arm64-${friendly_build_date}-${friendly_build_time}.tar.xz
+[[ "$quiet" -gt 4 ]] && msg_ok "Moved rootfs"
 #[[ "$quiet" -gt 0 ]] && printf ${distro}_${release}_${variant}_arm64_${friendly_build_date}_${friendly_build_time}.tar.xz
 cd $LastDir
