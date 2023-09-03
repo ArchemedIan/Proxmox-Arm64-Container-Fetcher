@@ -277,7 +277,7 @@ else
 	[[ -z "$4" ]] && PaTh_tO_ImAgE_CaChE="." || PaTh_tO_ImAgE_CaChE=$4
 	[[ -z "$5" ]] || quiet=$5
 fi
-echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
+[[ "$quiet" -gt 0 ]] ||echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
 #exit 0
 LUrL="$UrL"
 [[ "$quiet" -gt 4 ]] ||clear
