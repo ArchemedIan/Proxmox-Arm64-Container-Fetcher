@@ -2,7 +2,7 @@
 UrL=https://images.linuxcontainers.org/images
 LastDir=`pwd`
 ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rctcd /tmp/parm6rct
-[[ "$quiet" -gt 4 ]] || source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
+[[ "$quiet" -gt 4 ]] && source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
 fixTarball () {
 	#echo $1
 	#echo $2
@@ -11,9 +11,9 @@ fixTarball () {
 	if [ "$1" = "debian" ] ; then
 		### uncompress todays rootfs tarball
 		[[ "$quiet" -gt 0 ]] || echo "Decompressing Tarball..."
-  		[[ "$quiet" -gt 4 ]] || msg_info "Decompressing Tarball..."
+  		[[ "$quiet" -gt 4 ]] && msg_info "Decompressing Tarball..."
 		unxz -T0 ./rootfs.tar.xz
-		[[ "$quiet" -gt 4 ]] || msg_ok "Decompressed Tarball..."
+		[[ "$quiet" -gt 4 ]] && msg_ok "Decompressed Tarball..."
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
 		### debian switched to systemd-network or whatever, but prox expects ifupdown
 		## create files proxmox expects
@@ -113,9 +113,9 @@ fixTarball () {
   	elif [ "$1" = "ubuntu" ] ; then
    		### uncompress todays rootfs tarball
 		[[ "$quiet" -gt 0 ]] || echo "Decompressing Tarball..."
-  		[[ "$quiet" -gt 4 ]] || msg_info "Decompressing Tarball..."
+  		[[ "$quiet" -gt 4 ]] && msg_info "Decompressing Tarball..."
 		unxz -T0 ./rootfs.tar.xz
-		[[ "$quiet" -gt 4 ]] || msg_ok "Decompressed Tarball..."
+		[[ "$quiet" -gt 4 ]] && msg_ok "Decompressed Tarball..."
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
 		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
 		pct stop 999999999 >/dev/null 2>&1
@@ -230,7 +230,7 @@ fi
 echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
 #exit 0
 LUrL="$UrL"
-[[ "$quiet" -gt 4 ]] ||clear
+[[ "$quiet" -gt 4 ]] &&clear
 for UrlPart in distro release arm64 variant build_date
 do
 	if [ "$UrlPart" = "arm64" ] ; then
