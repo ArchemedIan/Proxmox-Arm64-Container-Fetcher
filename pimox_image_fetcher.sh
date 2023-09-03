@@ -347,8 +347,13 @@ UrL=$UrL/$distro/$release/arm64/$variant/$build_date/rootfs.tar.xz
 [[ "$quiet" -gt 0 ]] || echo "Checking Url"
 badurl=0
 curl --output /dev/null --silent --head --fail "$UrL" || badurl=1 
-[[ "$badurl" = 1 ]] && echo "bad url, check internet?" || echo "url is valid"
-[[ "$badurl" = 1 ]] && exit 0
+
+if [ "$badurl" = 1 ]; then
+	echo "bad url, check internet?"
+ 	exit 0
+else
+	[[ "$quiet" -gt 0 ]] ||echo "url is valid"
+fi
 [[ "$quiet" -gt 0 ]] || echo
 
 ## cleanup from last time
