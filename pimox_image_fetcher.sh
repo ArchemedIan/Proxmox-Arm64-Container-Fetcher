@@ -278,7 +278,7 @@ else
 	[[ -z "$5" ]] || quiet=$5
 fi
 echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
-exit 0
+#exit 0
 LUrL="$UrL"
 [[ "$quiet" -gt 4 ]] ||clear
 for UrlPart in distro release arm64 variant build_date
