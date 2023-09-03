@@ -288,7 +288,7 @@ do
 		[[ "$release" = -1 ]] || LUrL=$LUrL/$release
 		ListSort=1
 		[[ "$release" = -1 ]] || continue 
-		LIST=($(test $ListSort -eq 1 && curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'|sort -r || curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'))
+		LIST=($(test $ListSort -eq 1 && curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'|sed -e 's/^xenial$/16.04 (xenial)/' -e 's/^bionic$/18.04 (bionic)/' -e 's/^focal$/20.04 (focal)/' -e 's/^jammy$/22.04 (jammy)/' -e 's/^lunar$/23.04 (lunar)/' -e 's/^mantic$/23.10 (mantic)/' -e 's/^buster$/10 (buster)/' -e 's/^bullseye$/11 (bullseye)/' -e 's/^bookworm$/12 (bookworm)/'|sort -r || curl --silent $LUrL/ | grep -o 'href=".*">' | sed 's/href="//;s/\/">//'| grep -ve '\.\.'|sed -e 's/^xenial$/16.04 (xenial)/' -e 's/^bionic$/18.04 (bionic)/' -e 's/^focal$/20.04 (focal)/' -e 's/^jammy$/22.04 (jammy)/' -e 's/^lunar$/23.04 (lunar)/' -e 's/^mantic$/23.10 (mantic)/' -e 's/^buster$/10 (buster)/' -e 's/^bullseye$/11 (bullseye)/' -e 's/^bookworm$/12 (bookworm)/'))
 	fi
 	
 	if [ "$UrlPart" = "variant" ] ; then
