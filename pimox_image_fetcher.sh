@@ -1,7 +1,9 @@
 #!/bin/bash
 UrL=https://images.linuxcontainers.org/images
 LastDir=`pwd`
-ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rctcd /tmp/parm6rct
+
+ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rct
+cd /tmp/parm6rct
   YW=$(echo "\033[33m")
   BL=$(echo "\033[36m")
   RD=$(echo "\033[01;31m")
@@ -13,6 +15,7 @@ ls /tmp/parm6rct >/dev/null 2>&1||mkdir  /tmp/parm6rctcd /tmp/parm6rct
   CROSS="${RD}✗${CL}"
   BFR="\\r\\033[K"
   HOLD="-"
+  
 msg_info() {
   local msg="$1"
   echo -ne " ${HOLD} ${YW}${msg}..."
