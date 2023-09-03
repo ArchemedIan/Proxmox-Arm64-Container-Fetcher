@@ -17,7 +17,7 @@ fixTarball () {
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
 		### debian switched to systemd-network or whatever, but prox expects ifupdown
 		## create files proxmox expects
-		rm -rf ./etc
+		rm -rf ./etc >/dev/null 2>&1
 		mkdir -p ./etc/network
 		echo "auto lo" >> ./etc/network/interfaces
 		echo "iface lo inet loopback" >> ./etc/network/interfaces
@@ -25,32 +25,32 @@ fixTarball () {
 		## append correct files/folders to tarball (which wont actually do anything at first boot, but DHCP will work)
 		tar -rf ./rootfs.tar ./etc/network
 		tar -rf ./rootfs.tar ./etc/network/interfaces
-		rm -rf ./etc
+		rm -rf ./etc 
 		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
-		pct stop 999999999
-		pct unmount 999999999
-		pct destroy 999999999
-  		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
-  		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp
+		pct stop 999999999 >/dev/null 2>&1
+		pct unmount 999999999 >/dev/null 2>&1
+		pct destroy 999999999 >/dev/null 2>&1
+  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
+  		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
 		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype debian --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp
-		rm $(pwd)/rootfs.tar
-		pct start 999999999
-		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done"
-		pct exec 999999999 -- apt update
-		pct exec 999999999 -- apt install ifupdown wget -y
-		pct exec 999999999 -- sudo mv /etc/systemd/network/eth0.{network,off}
-		pct stop 999999999
-		pct unmount 999999999
-		pct mount 999999999
+		rm $(pwd)/rootfs.tar >/dev/null 2>&1
+		pct start 999999999 >/dev/null 2>&1
+		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
+		pct exec 999999999 -- apt update >/dev/null 2>&1
+		pct exec 999999999 -- apt install ifupdown wget -y >/dev/null 2>&1
+		pct exec 999999999 -- sudo mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
+		pct stop 999999999 >/dev/null 2>&1
+		pct unmount 999999999 >/dev/null 2>&1
+		pct mount 999999999 >/dev/null 2>&1
 		mntdir=`mount |grep -e "999999999/rootfs" | awk '{print $3}'`
 		thisdir=`pwd`
 		cd $mntdir
 		[[ "$quiet" -gt 0 ]] || echo Recompressing tarball...
   		tar -c . |xz -0T0 >$thisdir/rootfs.tar.xz
 		cd $thisdir
-		pct unmount 999999999
-		pct destroy 999999999
-		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
+		pct unmount 999999999 >/dev/null 2>&1
+		pct destroy 999999999 >/dev/null 2>&1
+		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
 	
 	elif [ "$1" = "apertis" ] ; then
 		echo "$1 will boot, but the network settings in the webgui are ignored."
@@ -118,29 +118,29 @@ fixTarball () {
 		[[ "$quiet" -gt 4 ]] || msg_ok "Decompressed Tarball..."
 		[[ "$quiet" -gt 0 ]] || echo "applying fix(es)"
 		[[ "$quiet" -gt 0 ]] || echo "create temporary container..."
-		pct stop 999999999
-		pct unmount 999999999
-		pct destroy 999999999
-  		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp
-  		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp
+		pct stop 999999999 >/dev/null 2>&1
+		pct unmount 999999999 >/dev/null 2>&1
+		pct destroy 999999999 >/dev/null 2>&1
+  		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp
+  		pvesm add dir ctbuildtmp -content rootdir -path /tmp/ctbuildtmp >/dev/null 2>&1
 		pct create 999999999 $(pwd)/rootfs.tar --arch arm64 --features nesting=1 --hostname pimox-fixer --ostype ubuntu --password='passw0rd' --storage ctbuildtmp --net0 name=eth0,bridge=vmbr0,firewall=1,ip=dhcp,ip6=dhcp
-		rm $(pwd)/rootfs.tar
-		pct start 999999999
-		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done"
-		pct exec 999999999 -- apt update
-		pct exec 999999999 -- apt install wget -y
-		pct stop 999999999
-		pct unmount 999999999
-		pct mount 999999999
+		rm $(pwd)/rootfs.tar >/dev/null 2>&1
+		pct start 999999999 >/dev/null 2>&1
+		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
+		pct exec 999999999 -- apt update >/dev/null 2>&1
+		pct exec 999999999 -- apt install wget -y >/dev/null 2>&1
+		pct stop 999999999 >/dev/null 2>&1
+		pct unmount 999999999 >/dev/null 2>&1
+		pct mount 999999999 >/dev/null 2>&1
 		mntdir=`mount |grep -e "999999999/rootfs" | awk '{print $3}'`
 		thisdir=`pwd`
 		cd $mntdir
 		[[ "$quiet" -gt 0 ]] || echo Recompressing tarball...
 		tar -c . |xz -0T0 >$thisdir/rootfs.tar.xz
 		cd $thisdir
-		pct unmount 999999999
-		pct destroy 999999999
-		sudo pvesm status | grep ctbuildtmp && pvesm remove ctbuildtmp	
+		pct unmount 999999999 >/dev/null 2>&1
+		pct destroy 999999999 >/dev/null 2>&1 
+		sudo pvesm status | grep ctbuildtmp >/dev/null 2>&1 && pvesm remove ctbuildtmp	
 	elif [ "$1" = "alpine" ] || [ "$1" = "arch" ] || [ "$1" = "centos" ] || [ "$1" = "devuan" ] || [ "$1" = "kali" ]; then 
 		echo
 	else
