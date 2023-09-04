@@ -278,7 +278,7 @@ else
 		fi
 	fi
 	[[ -z "$3" ]] && variant=-1 || variant=$3
-	[[ -z "$4" ]] && PaTh_tO_ImAgE_CaChE="." || PaTh_tO_ImAgE_CaChE=$4
+	[[ -z "$4" ]] && PaTh_tO_ImAgE_CaChE=$LastDir || PaTh_tO_ImAgE_CaChE=$4
 	[[ -z "$5" ]] || quiet=$5
 fi
 [[ "$quiet" -gt 0 ]] ||echo $distro $release $variant $PaTh_tO_ImAgE_CaChE $quiet
