@@ -65,9 +65,9 @@ fixTarball () {
 		pct start 999999999 >/dev/null 2>&1
   		[[ "$quiet" -gt 4 ]] && msg_ok "Started Temporary Container"
     		[[ "$quiet" -gt 4 ]] && msg_info "Updating Image And Applying Fix(es)"
-		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
+		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient -v -4 -1 eth0; sleep 5 ; ping -c1 www.google.com > /dev/null && break; done" >/dev/null 2>&1
 		pct exec 999999999 -- apt update >/dev/null 2>&1
-		pct exec 999999999 -- apt install ifupdown wget -y >/dev/null 2>&1
+		pct exec 999999999 -- apt install ifupdown wget python3 python3-dev python3-pip python3-venv -y >/dev/null 2>&1
 		pct exec 999999999 -- mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
@@ -169,7 +169,7 @@ fixTarball () {
     		[[ "$quiet" -gt 4 ]] && msg_info "Updating Image And Applying Fix(es)"
 		pct exec 999999999 -- bash -c "for i in {1..50}; do ip link set eth0 up ; dhclient eth0; sleep 5 ; ping -c1 www.google.com &> /dev/null && break; done" >/dev/null 2>&1
 		pct exec 999999999 -- apt update >/dev/null 2>&1
-		pct exec 999999999 -- apt install wget -y >/dev/null 2>&1
+		pct exec 999999999 -- apt install wget python3 python3-dev python3-pip python3-venv-y >/dev/null 2>&1
 		pct exec 999999999 -- mv /etc/systemd/network/eth0.{network,off} >/dev/null 2>&1
 		pct stop 999999999 >/dev/null 2>&1
 		pct unmount 999999999 >/dev/null 2>&1
